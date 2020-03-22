@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE cmapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<cmapper>
+    <!--根据id查询-->
+    <select id="findUserById" parameterType="int" resultType="edu.xidian.model.User">
+        SELECT user FROM WHERE id=#{id}
+    </select>
+</cmapper>
