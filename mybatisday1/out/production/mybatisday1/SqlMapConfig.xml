@@ -3,6 +3,19 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+
+    <properties resource="db.properties"/>
+
+
+    <!--配置别名-->
+    <typeAliases>
+        <!--<typeAlias type="edu.xidian.model.User" alias="user"></typeAlias>-->
+
+        <!--指定包名，别名就是类名，第一个小写 User 别名就是user-->
+        <package name="edu.xidian.model"></package>
+        <package name="edu.xidian.vo"></package>
+    </typeAliases>
+
     <!-- 配置mybatis的环境信息 -->
     <environments default="development">
         <environment id="development">
