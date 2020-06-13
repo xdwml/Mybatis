@@ -1,10 +1,59 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE cmapper
+<!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<cmapper>
-    <!--根据id查询-->
+<mapper namespace="user">
+
     <select id="findUserById" parameterType="int" resultType="edu.xidian.model.User">
-        SELECT user FROM WHERE id=#{id}
+        SELECT * from user where id=#{id}
+
     </select>
-</cmapper>
+
+    <!--
+             [${}]：表示拼接SQL字符串
+             [${value}]：表示要拼接的是简单类型参数。
+             注意：
+             简单类型:int,byte,... string
+            1、如果参数为简单类型时，${}里面的参数名称必须为value
+            2、${}会引起SQL注入，一般情况下不推荐使用。但是有些场景必须使用${}，比如order by ${colname}
+      -->
+    <select id="findUserByName" parameterType="String" resultType="edu.xidian.model.User">
+        SELECT * FROM user WHERE username LIKE '%${value}%'
+    </select>
+
+
+    <!--插入数据
+        这里的占位是写模型的属性
+    -->
+    <insert id="insertUser" parameterType="edu.xidian.model.User">
+        INSERT INTO user (username,sex,birthday,address)
+        VALUE (#{username},#{sex},#{birthday},#{address});
+    </insert>
+    <!--删除-->
+    <delete id="deleteUser" parameterType="int">
+        DELETE FROM user where id = #{id};
+    </delete>
+
+
+    <!--更新-->
+    <update id="updateUser" parameterType="edu.xidian.model.User">
+        UPDATE user SET address = #{address},sex = #{sex}
+        WHERE id = #{id}
+    </update>
+
+
+    <!--插入时自动返回主键id-->
+    <insert id="insertUser2" parameterType="edu.xidian.model.User">
+        <!--
+			[selectKey标签]：通过select查询来生成主键
+			[keyProperty]：指定存放生成主键的属性
+			[resultType]：生成主键所对应的Java类型
+			[order]：指定该查询主键SQL语句的执行顺序，相对于insert语句
+			[last_insert_id]：MySQL的函数，要配合insert语句一起使用 -->
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO user (username,sex,birthday,address)
+        VALUE (#{username},#{sex},#{birthday},#{address});
+    </insert>
+</mapper>
