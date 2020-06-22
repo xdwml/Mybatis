@@ -1,9 +1,8 @@
 package edu.xidian.Test;
 
-import edu.xidian.dao.UserDao;
-import edu.xidian.dao.UserDaoImpl;
 import edu.xidian.mapper.UserMapper;
 import edu.xidian.model.User;
+import edu.xidian.vo.UserQueryVO;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -12,11 +11,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.jws.soap.SOAPBinding;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
+import java.util.List;
 
-public class Demo04 {
+public class Demo05 {
     SqlSession session;
     @Before
     public void before() throws IOException {
@@ -33,15 +33,15 @@ public class Demo04 {
     @Test
     public void test1() throws IOException{
         UserMapper userMapper=session.getMapper(UserMapper.class);
-        //System.out.println(userMapper.getClass());
 
-        //获取数据
-        System.out.println(userMapper.findUserById(22));
+        //通过模型的包装类来查询用户
+        UserQueryVO query=new UserQueryVO();
+        User user=new User();
+        user.setId(1);
+        query.setUser(user);
 
-        /*User user=new User("xxx","x",new Date(),"cc");
-        userMapper.save(user);
-        session.commit();*/
-
+        List<User> list = userMapper.findUserBuUserQueryVo(query);
+        System.out.println(list);
     }
 
 }
